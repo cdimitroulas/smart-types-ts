@@ -1,7 +1,8 @@
 import { pipe } from "fp-ts/lib/function";
-import * as o from "fp-ts/lib/Option";
+import * as e from "fp-ts/lib/Either";
 import { SmartTypeRefined } from "../utilTypes";
 import { mkWithLength } from "../withLength";
+import { mkString } from "./string";
 
 export type StringWithLength<
   Min extends number,
@@ -11,12 +12,13 @@ export type StringWithLength<
 export const mkStringWithLength = <Min extends number, Max extends number>(
   min: Min,
   max: Max
-): ((arr: string) => o.Option<StringWithLength<Min, Max>>) => {
+): ((input: unknown) => e.Either<string, StringWithLength<Min, Max>>) => {
   const mkWithLength_ = mkWithLength(min, max);
 
-  return (str: string) =>
+  return input =>
     pipe(
-      mkWithLength_(str),
-      o.map(str => (str as string) as StringWithLength<Min, Max>)
+      mkString(input),
+      e.chain(mkWithLength_),
+      e.map(str => (str as string) as StringWithLength<Min, Max>)
     );
 };

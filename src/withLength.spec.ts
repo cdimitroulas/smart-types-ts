@@ -1,11 +1,11 @@
 import { assert } from "chai";
 import * as fc from "fast-check";
-import * as o from "fp-ts/lib/Option";
+import * as e from "fp-ts/lib/Either";
 import { mkWithLength } from "./withLength";
 
 describe("WithLength", () => {
   describe("mkWithLength", () => {
-    it("returns None when the input is invalid", () => {
+    it("returns a Left when the input is invalid", () => {
       const min = 10;
       const max = 30;
 
@@ -18,7 +18,10 @@ describe("WithLength", () => {
 
       fc.assert(
         fc.property(invalidInput, input => {
-          assert.deepStrictEqual(mkWithLength(min, max)(input), o.none);
+          assert.deepStrictEqual(
+            mkWithLength(min, max)(input),
+            e.left(`Length not between ${min}-${max}`)
+          );
         })
       );
     });
@@ -34,9 +37,15 @@ describe("WithLength", () => {
 
       fc.assert(
         fc.property(validInput, input => {
-          assert.deepStrictEqual(mkWithLength(min, max)(input), o.some(input));
+          assert.deepStrictEqual(mkWithLength(min, max)(input), e.right(input));
         })
       );
+    });
+
+    // length cannot be negative!
+    it("throws an error if min or max is negative", () => {
+      assert.throws(() => mkWithLength(-5, 10));
+      assert.throws(() => mkWithLength(0, -20));
     });
   });
 });

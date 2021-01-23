@@ -1,11 +1,11 @@
 import { assert } from "chai";
 import * as fc from "fast-check";
-import * as o from "fp-ts/lib/Option";
+import * as e from "fp-ts/lib/Either";
 import { mkArrayWithLength } from "./arrayWithLength";
 
 describe("ArrayWithLength", () => {
   describe("mkArrayWithLength", () => {
-    it("returns None when the input is invalid", () => {
+    it("returns a Left when the input is invalid", () => {
       const maxLength = 10;
 
       const invalidInput = fc.array(fc.anything(), {
@@ -14,7 +14,10 @@ describe("ArrayWithLength", () => {
 
       fc.assert(
         fc.property(invalidInput, <T>(list: T[]) => {
-          assert.deepStrictEqual(mkArrayWithLength(0, maxLength)(list), o.none);
+          assert.deepStrictEqual(
+            mkArrayWithLength(0, maxLength)(list),
+            e.left(`Length not between 0-${maxLength}`)
+          );
         })
       );
     });
@@ -28,7 +31,7 @@ describe("ArrayWithLength", () => {
         fc.property(validInput, <T>(list: T[]) => {
           assert.deepStrictEqual(
             mkArrayWithLength(0, maxLength)(list),
-            o.some(list)
+            e.right(list)
           );
         })
       );

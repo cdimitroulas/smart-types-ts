@@ -1,14 +1,15 @@
-import * as o from "fp-ts/lib/Option";
-import { pipe } from "fp-ts/lib/pipeable";
+import * as e from "fp-ts/lib/Either";
+import { pipe } from "fp-ts/lib/function";
 import validator from "validator";
 import { SmartType } from "../utilTypes";
+import { mkString } from "./string";
 
 export type URL = SmartType<string, "URL">;
 
-export const mkURL = (value: string): o.Option<URL> =>
+export const mkURL = (value: unknown): e.Either<string, URL> =>
   pipe(
-    value,
-    s => s.trim(),
-    o.fromPredicate(validator.isURL),
-    o.map(id => id as URL)
+    mkString(value),
+    e.map(s => s.trim()),
+    e.chain(e.fromPredicate(validator.isURL, () => "Not a valid URL")),
+    e.map(id => id as URL)
   );

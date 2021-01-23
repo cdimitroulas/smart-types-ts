@@ -7,18 +7,22 @@
  * @since version 0.0.1
  */
 import { pipe } from "fp-ts/lib/pipeable";
-import * as o from "fp-ts/lib/Option";
+import * as e from "fp-ts/lib/Either";
 import validator from "validator";
-
 import { SmartType } from "../utilTypes";
+import { mkString } from "./string";
 
 export type EmailAddress = SmartType<string, "EmailAddress">;
 
-export const mkEmailAddress = (value: string): o.Option<EmailAddress> =>
+export const mkEmailAddress = (
+  value: unknown
+): e.Either<string, EmailAddress> =>
   pipe(
-    value,
-    s => s.trim(),
-    s => s.toLowerCase(),
-    o.fromPredicate(validator.isEmail),
-    o.map(email => email as EmailAddress)
+    mkString(value),
+    e.map(s => s.trim()),
+    e.map(s => s.toLowerCase()),
+    e.chain(
+      e.fromPredicate(validator.isEmail, () => "Not a valid email address")
+    ),
+    e.map(email => email as EmailAddress)
   );

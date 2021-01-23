@@ -1,6 +1,6 @@
 import { assert } from "chai";
 import * as fc from "fast-check";
-import * as o from "fp-ts/lib/Option";
+import * as e from "fp-ts/lib/Either";
 import validator from "validator";
 import { mkEmailAddress } from "./emailAddress";
 
@@ -11,7 +11,10 @@ describe("EmailAddress", () => {
 
       fc.assert(
         fc.property(invalidInput, (str: string) => {
-          assert.deepStrictEqual(mkEmailAddress(str), o.none);
+          assert.deepStrictEqual(
+            mkEmailAddress(str),
+            e.left("Not a valid email address")
+          );
         })
       );
     });
@@ -23,7 +26,7 @@ describe("EmailAddress", () => {
 
       fc.assert(
         fc.property(validInput, (email: string) => {
-          assert.deepStrictEqual(mkEmailAddress(email), o.some(email));
+          assert.deepStrictEqual(mkEmailAddress(email), e.right(email));
         })
       );
     });
@@ -31,14 +34,14 @@ describe("EmailAddress", () => {
     it("lowercases the input", () => {
       assert.deepStrictEqual(
         mkEmailAddress("Test@example.com"),
-        o.some("test@example.com")
+        e.right("test@example.com")
       );
     });
 
     it("trims the input", () => {
       assert.deepStrictEqual(
         mkEmailAddress("  test@example.com    "),
-        o.some("test@example.com")
+        e.right("test@example.com")
       );
     });
   });
