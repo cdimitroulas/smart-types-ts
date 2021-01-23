@@ -1,5 +1,5 @@
 import { pipe } from "fp-ts/lib/pipeable";
-import * as o from "fp-ts/lib/Option";
+import * as e from "fp-ts/lib/Either";
 import { SmartTypeRefined } from "../utilTypes";
 
 export type NumInRange<
@@ -10,7 +10,7 @@ export type NumInRange<
 type MkNumInRange = <Min extends number, Max extends number>(
   min: Min,
   max: Max
-) => <Num extends number>(value: Num) => o.Option<NumInRange<Min, Max>>;
+) => <Num extends number>(value: Num) => e.Either<string, NumInRange<Min, Max>>;
 
 export const mkNumInRange: MkNumInRange = <
   Min extends number,
@@ -28,7 +28,10 @@ export const mkNumInRange: MkNumInRange = <
   return value =>
     pipe(
       value,
-      o.fromPredicate(val => val >= min && val <= max),
-      o.map(x => x as NumInRange<Min, Max>)
+      e.fromPredicate(
+        val => val >= min && val <= max,
+        () => `Number must be between ${min}-${max}`
+      ),
+      e.map(x => x as NumInRange<Min, Max>)
     );
 };

@@ -1,12 +1,12 @@
 import { pipe } from "fp-ts/lib/function";
-import * as o from "fp-ts/lib/Option";
+import * as e from "fp-ts/lib/Either";
 import { SmartType } from "../utilTypes";
 
 export type Int = SmartType<number, "Integer">;
 
-export const mkInt = (input: number): o.Option<Int> =>
+export const mkInt = (input: number): e.Either<string, Int> =>
   pipe(
     input,
-    o.fromPredicate(Number.isInteger),
-    o.map(x => x as Int)
+    e.fromPredicate(Number.isInteger, () => "Not an integer"),
+    e.map(x => x as Int)
   );

@@ -1,6 +1,6 @@
 import { assert } from "chai";
 import * as fc from "fast-check";
-import * as o from "fp-ts/lib/Option";
+import * as e from "fp-ts/lib/Either";
 import { mkInt } from "./int";
 
 describe("Int", () => {
@@ -13,7 +13,7 @@ describe("Int", () => {
 
       fc.assert(
         fc.property(invalidInput, (num: number) => {
-          assert.deepStrictEqual(mkInt(num), o.none);
+          assert.deepStrictEqual(mkInt(num), e.left("Not an integer"));
         })
       );
     });
@@ -23,7 +23,7 @@ describe("Int", () => {
 
       fc.assert(
         fc.property(validInput, (num: number) => {
-          assert.deepStrictEqual(mkInt(num), o.some(num));
+          assert.deepStrictEqual(mkInt(num), e.right(num));
         })
       );
     });

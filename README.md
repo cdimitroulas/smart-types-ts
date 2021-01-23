@@ -3,6 +3,54 @@
 A collection of types and smart constructors which enable you to be more strict when defining
 your application's important types/interfaces.
 
+## Usage
+
+Define your domain types using the relevant types from `smart-types-ts`:
+
+```ts
+import { EmailAddress, StringOfLength, URL } from "smart-types-ts";
+
+interface User {
+  email: EmailAddress;
+  fullName: StringOfLength<1, 50>;
+  profilePicture: URL;
+}
+```
+
+Define functions to build your domain types:
+
+```ts
+import {
+  mkEmailAddress,
+  mkObject,
+  mkStringOfLength,
+  mkURL
+} from "smart-types-ts";
+
+const mkUser = mkObject({
+  email: mkEmailAddress,
+  fullName: mkStringOfLength(1, 50),
+  profilePicture: mkUrl
+});
+
+// Left("Not an object")
+mkUser(null);
+
+// Left({
+//   email: "Not a valid email",
+//   fullName: "Not a string between 1 and 50 chars",
+//   profilePicture: "Not a valid URL"
+// })
+mkUser({});
+
+// Right(User)
+mkUser({
+  email: "hello@example.com",
+  fullName: "Jane Doe",
+  profilePicture: "https://www.example.com/photo/1"
+});
+```
+
 ## What problem does this library solve?
 
 The Typescript compiler is a powerful tool which developers can leverage to guarantee
@@ -18,17 +66,15 @@ This could be represented by the following interface:
 ```ts
 interface User {
   email: string;
-  username: string;
-  password: string;
+  fullName: string;
+  profilePicture: string;
 }
 ```
 
 There are a number of problems with this type. It doesn't tell us anything about what values
 are valid for each of the fields. An `email` should only ever contain a valid email address.
-We may want a `username` to have a minimum length of 4 characters and a maximum length of 30
-characters. The `password` may need to meet some rules to may it more secure, such as a
-min length and a certain number of letters/numbers; it should also be hashed so that we never
-save plain text passwords to our database!
+We may want the `fullName` to have a minimum length of 1 character and a maximum length of 50
+characters. The `profilePicture` should be a valid URL pointing to the location of the photo.
 
 What if instead we were able to define these constrains in terms of types?
 
@@ -37,8 +83,8 @@ This could look like:
 ```ts
 interface User {
   email: EmailAddress;
-  username: StringOfLength<4, 30>;
-  password: HashedPassword;
+  fullName: StringOfLength<1, 50>;
+  profilePicture: URL;
 }
 ```
 

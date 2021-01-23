@@ -1,12 +1,12 @@
 import { pipe } from "fp-ts/lib/function";
-import * as o from "fp-ts/lib/Option";
+import * as e from "fp-ts/lib/Either";
 import { SmartType } from "../utilTypes";
 
 export type PositiveNum = SmartType<number, "PositiveNum">;
 
-export const mkPositiveNum = (input: number): o.Option<PositiveNum> =>
+export const mkPositiveNum = (input: number): e.Either<string, PositiveNum> =>
   pipe(
     input,
-    o.fromPredicate(x => x > 0),
-    o.map(x => x as PositiveNum)
+    e.fromPredicate(x => x > 0, () => "Not a positive number"),
+    e.map(x => x as PositiveNum)
   );

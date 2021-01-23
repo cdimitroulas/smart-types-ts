@@ -1,6 +1,6 @@
 import { assert } from "chai";
 import * as fc from "fast-check";
-import * as o from "fp-ts/lib/Option";
+import * as e from "fp-ts/lib/Either";
 import { mkPositiveNum } from "./positiveNum";
 
 describe("PositiveNum", () => {
@@ -13,8 +13,11 @@ describe("PositiveNum", () => {
       );
 
       fc.assert(
-        fc.property(invalidInput, (num: number) => {
-          assert.deepStrictEqual(mkPositiveNum(num), o.none);
+        fc.property(invalidInput, num => {
+          assert.deepStrictEqual(
+            mkPositiveNum(num),
+            e.left("Not a positive number")
+          );
         })
       );
     });
@@ -27,8 +30,8 @@ describe("PositiveNum", () => {
       );
 
       fc.assert(
-        fc.property(validInput, (num: number) => {
-          assert.deepStrictEqual(mkPositiveNum(num), o.some(num));
+        fc.property(validInput, num => {
+          assert.deepStrictEqual(mkPositiveNum(num), e.right(num));
         })
       );
     });

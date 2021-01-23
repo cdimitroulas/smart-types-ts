@@ -1,6 +1,6 @@
 import { assert } from "chai";
 import * as fc from "fast-check";
-import * as o from "fp-ts/lib/Option";
+import * as e from "fp-ts/lib/Either";
 import { mkNumInRange } from "./numInRange";
 
 describe("NumInRange", () => {
@@ -20,7 +20,10 @@ describe("NumInRange", () => {
 
       fc.assert(
         fc.property(invalidInput, (num: number) => {
-          assert.deepStrictEqual(mkNumInRange(rangeMin, rangeMax)(num), o.none);
+          assert.deepStrictEqual(
+            mkNumInRange(rangeMin, rangeMax)(num),
+            e.left(`Number must be between ${rangeMin}-${rangeMax}`)
+          );
         })
       );
     });
@@ -39,7 +42,7 @@ describe("NumInRange", () => {
         fc.property(validInput, (num: number) => {
           assert.deepStrictEqual(
             mkNumInRange(rangeMin, rangeMax)(num),
-            o.some(num)
+            e.right(num)
           );
         })
       );
