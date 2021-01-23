@@ -10,5 +10,13 @@
   "license": "MIT",
   "engines": {
     "node": ">=14.4.0"
+  },
+  "devDependencies": {
+    "@cdimitroulas/typescript-scripts": "^2.1.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
   }
 }
