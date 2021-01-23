@@ -6,7 +6,10 @@ import { mkInt } from "./int";
 describe("Int", () => {
   describe("mkInt", () => {
     it("returns None when the input is invalid", () => {
-      const invalidInput = fc.oneof(fc.float(), fc.double());
+      const invalidInput = fc.oneof(
+        fc.float().filter(num => !Number.isInteger(num)),
+        fc.double().filter(num => !Number.isInteger(num))
+      );
 
       fc.assert(
         fc.property(invalidInput, (num: number) => {
