@@ -1,7 +1,7 @@
 import { assert } from "chai";
 import * as fc from "fast-check";
 import * as o from "fp-ts/lib/Option";
-import { mkPositiveNum } from "./positive";
+import { mkPositiveNum } from "./positiveNum";
 
 describe("PositiveNum", () => {
   describe("mkPositiveNum", () => {
