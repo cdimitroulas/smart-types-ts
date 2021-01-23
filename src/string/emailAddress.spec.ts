@@ -1,13 +1,16 @@
 import { assert } from "chai";
 import * as fc from "fast-check";
 import * as o from "fp-ts/lib/Option";
+import validator from "validator";
 import { mkEmailAddress } from "./emailAddress";
 
 describe("EmailAddress", () => {
   describe("mkEmailAddress", () => {
     it("returns None when the input is invalid", () => {
+      const invalidInput = fc.string().filter(str => !validator.isEmail(str));
+
       fc.assert(
-        fc.property(fc.string(), (str: string) => {
+        fc.property(invalidInput, (str: string) => {
           assert.deepStrictEqual(mkEmailAddress(str), o.none);
         })
       );
