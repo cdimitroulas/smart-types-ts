@@ -1,9 +1,9 @@
 import * as o from "fp-ts/lib/Option";
 import { pipe } from "fp-ts/lib/pipeable";
 import validator from "validator";
-import { Never } from "../utilTypes";
+import { SmartType } from "../utilTypes";
 
-export type URL = string & Never<"__Url__">;
+export type URL = SmartType<string, "URL">;
 
 export const mkURL = (value: string): o.Option<URL> =>
   pipe(

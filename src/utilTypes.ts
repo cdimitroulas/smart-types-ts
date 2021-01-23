@@ -21,8 +21,14 @@
  * const a: MyBrandedString = "test" // ERROR
  * const b: MyBrandedString = "test" as MyBrandedString // OK
  */
-export type Never<K extends string> = { [P in K]: never };
+type Never<K extends string> = { [P in K]: never };
 
-export declare class Refinement<R> {
+declare class Refinement<R> {
   private readonly __refinement__: R;
 }
+
+export type SmartType<Type, Name extends string> = Type & Never<Name>;
+
+export type SmartTypeRefined<Type, Name extends string, R> = Type &
+  Never<Name> &
+  Refinement<R>;

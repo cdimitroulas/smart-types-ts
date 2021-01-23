@@ -10,9 +10,9 @@ import { pipe } from "fp-ts/lib/pipeable";
 import * as o from "fp-ts/lib/Option";
 import validator from "validator";
 
-import { Never } from "../utilTypes";
+import { SmartType } from "../utilTypes";
 
-export type EmailAddress = string & Never<"__EmailAddress__">;
+export type EmailAddress = SmartType<string, "EmailAddress">;
 
 export const mkEmailAddress = (value: string): o.Option<EmailAddress> =>
   pipe(

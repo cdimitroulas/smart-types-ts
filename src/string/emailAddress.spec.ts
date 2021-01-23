@@ -17,8 +17,12 @@ describe("EmailAddress", () => {
     });
 
     it("succeeds when the input is a valid email address", () => {
+      const validInput = fc
+        .emailAddress()
+        .filter(email => validator.isEmail(email));
+
       fc.assert(
-        fc.property(fc.emailAddress(), (email: string) => {
+        fc.property(validInput, (email: string) => {
           assert.deepStrictEqual(mkEmailAddress(email), o.some(email));
         })
       );
