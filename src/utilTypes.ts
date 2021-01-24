@@ -1,3 +1,4 @@
+import * as e from "fp-ts/lib/Either";
 type Never<K extends string> = { [P in K]: never };
 
 /**
@@ -34,7 +35,8 @@ declare class Refinement<R> {
  * encoded.
  *
  * For example, if we want a type which specifies that a number must lie within a particular
- * range, then the type must contain the min/max values of that range.
+ * range, then the type must contain the min/max values of that range (which cannot be achieved
+ * using the existing SmartType type).
  *
  * @example
  * ```ts
@@ -50,3 +52,15 @@ declare class Refinement<R> {
 export type SmartTypeRefined<Type, Name extends string, R> = Type &
   Never<Name> &
   Refinement<R>;
+
+export type SmartConstructor<S> = S extends SmartType<infer T, infer _>
+  ? (input: T) => e.Either<string, S>
+  : never;
+
+export type SmartConstructorRefined<S> = S extends SmartTypeRefined<
+  infer T,
+  infer _Name,
+  infer _Refinement
+>
+  ? (input: T) => e.Either<string, S>
+  : never;

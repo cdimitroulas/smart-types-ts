@@ -18,6 +18,6 @@ export const mkArrayWithLength = <Min extends number, Max extends number>(
   return <T>(arr: T[]) =>
     pipe(
       mkWithLength_(arr),
-      e.map(list => (list as T) as ArrayWithLength<Min, Max, T>)
+      e.map((list: T[]) => list as ArrayWithLength<Min, Max, T>)
     );
 };

@@ -6,23 +6,16 @@
  *
  * @since version 0.0.1
  */
-import { pipe } from "fp-ts/lib/pipeable";
 import * as e from "fp-ts/lib/Either";
+import { flow } from "fp-ts/lib/function";
 import validator from "validator";
-import { SmartType } from "../utilTypes";
-import { mkString } from "./string";
+import { SmartConstructor, SmartType } from "../utilTypes";
 
 export type EmailAddress = SmartType<string, "EmailAddress">;
 
-export const mkEmailAddress = (
-  value: unknown
-): e.Either<string, EmailAddress> =>
-  pipe(
-    mkString(value),
-    e.map(s => s.trim()),
-    e.map(s => s.toLowerCase()),
-    e.chain(
-      e.fromPredicate(validator.isEmail, () => "Not a valid email address")
-    ),
-    e.map(email => email as EmailAddress)
-  );
+export const mkEmailAddress: SmartConstructor<EmailAddress> = flow(
+  s => s.trim(),
+  s => s.toLowerCase(),
+  e.fromPredicate(validator.isEmail, () => "Not a valid email address"),
+  e.map(email => email as EmailAddress)
+);
