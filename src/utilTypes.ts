@@ -1,7 +1,4 @@
 import * as e from "fp-ts/lib/Either";
-import { EmailAddress } from "./string/emailAddress";
-import { StringWithLength } from "./string/stringWithLength";
-import { URL } from "./string/url";
 type Never<K extends string> = { [P in K]: never };
 
 /**
@@ -80,10 +77,8 @@ export type SmartConstructorRefined<S> = S extends SmartTypeRefined<
 export type SimpleType<S> = S extends
   | SmartType<infer Type, infer _>
   | SmartTypeRefined<infer Type, infer _, infer __>
-  ? Type
-  : S extends (infer T)[]
-  ? SimpleType<T>[]
-  : S;
+  ? Type // Make it work for arrays of SmartTypes as well
+  : (S extends (infer T)[] ? SimpleType<T>[] : S);
 
 // Recursively go through an object containing Smart Types and "dumb" the types back down
 // to regular TS types like string/boolean/number etc. Regular "dumb" types are returned

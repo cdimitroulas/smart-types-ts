@@ -7,9 +7,9 @@
     "compile": "typescript-scripts compile",
     "compile:prod": "typescript-scripts compile --project tsconfig.prod.json",
     "compile:watch ": "npm run compile -- --watch",
-    "lint": "typescript-scripts lint src/**/*.ts",
-    "test:watch": "typescript-scripts test:transpileOnly --watch src/**/*.spec.ts",
-    "test": "npm run compile && npm run lint && typescript-scripts test:transpileOnly src/**/*.spec.ts"
+    "lint": "typescript-scripts lint 'src/**/*.ts'",
+    "test:watch": "typescript-scripts test:transpileOnly --watch 'src/**/*.spec.ts'",
+    "test": "npm run compile && npm run lint && typescript-scripts test:transpileOnly 'src/**/*.spec.ts'"
   },
   "author": "Christos Dimitroulas",
   "license": "MIT",

@@ -13,7 +13,7 @@ describe("WithLength", () => {
         fc.array(fc.anything(), { minLength: max + 1 }),
         fc.array(fc.anything(), { maxLength: min - 1 }),
         fc.string({ maxLength: min - 1 }),
-        fc.string({ maxLength: max + 1 })
+        fc.string({ minLength: max + 1 })
       );
 
       fc.assert(

@@ -12,45 +12,50 @@ import { EmailAddress, StringOfLength, URL } from "smart-types-ts";
 
 interface User {
   email: EmailAddress;
+  name: {
+    display: StringOfLength<1, 30>;
+    full: StringOfLength<1, 100>;
+  };
   fullName: StringOfLength<1, 50>;
   profilePicture: URL;
 }
 ```
 
-Define functions to build your domain types:
+Define functions to convert simple objects to your _smart types_:
 
 ```ts
 import {
   mkEmailAddress,
   mkObject,
   mkStringOfLength,
-  mkURL
+  mkURL,
 } from "smart-types-ts";
 
-type FieldError = {
-  email?: string;
-  fullName?: string;
-  profilePicture?: string;
-};
+// Define our mkUser function which can be used to construct a User
+const mkUser = mkSmartObject<User>({
+  email: mkEmailAddress,
+  name: mkSmartObject({
+    display: mkStringOfLength<1, 30>,
+    full: mkStringOfLength<1, 100>
+  }),
+  profilePicture: mkUrl,
+});
 
-const mkUser = (data: SimpleObject<User>): e.Either<FieldError, User> =>
-  mkSmartObject({
-    email: mkEmailAddress,
-    fullName: mkStringOfLength(1, 50),
-    profilePicture: mkUrl
-  });
 
-mkUser({ email: "bleh", fullName: "", profilePicture: "bad-url" });
+mkUser({ email: "bleh", name: { display: "", full: "" }, profilePicture: "bad-url" });
 // Left({
 //   email: "Not a valid email",
-//   fullName: "Not a string between 1 and 50 chars",
+//   name: {
+//     display: "Length not between 1-30",
+//     full: "Length not between 1-100",
+//   },
 //   profilePicture: "Not a valid URL"
 // })
 
 mkUser({
   email: "hello@example.com",
-  fullName: "Jane Doe",
-  profilePicture: "https://www.example.com/photo/1"
+  name: { display: "Jane", full: "Jane Doe" },
+  profilePicture: "https://www.example.com/photo/1",
 });
 // Right(User)
 ```
@@ -92,6 +97,9 @@ interface User {
 }
 ```
 
-`smart-types-ts` simply provides a large number of these utility types and their constructors
-ready for you to use, so that you can get on with modelling your application's domain without
-worrying about dealing with clever Typescript tricks.
+`smart-types-ts` simply provides a large number of these _Smart Types_ and their corresponding
+constructors (called _Smart Constructors_!) ready for you to use, so that you can get on with
+modelling your application's domain without havnig to deal with complex Typescript tricks.
+
+It also provides the `mkSmartObject` function which allows you to easily convert your simple
+objects into _smart objects_.
