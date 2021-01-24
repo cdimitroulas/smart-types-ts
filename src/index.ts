@@ -9,4 +9,9 @@ export {
   mkStringWithLength
 } from "./string/stringWithLength";
 export { URL, mkURL } from "./string/url";
-export { SmartType, SmartTypeRefined } from "./utilTypes";
+export {
+  SimpleObject,
+  SmartConstructor,
+  SmartType,
+  SmartTypeRefined
+} from "./utilTypes";

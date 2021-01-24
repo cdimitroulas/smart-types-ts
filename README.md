@@ -27,28 +27,32 @@ import {
   mkURL
 } from "smart-types-ts";
 
-const mkUser = mkObject({
-  email: mkEmailAddress,
-  fullName: mkStringOfLength(1, 50),
-  profilePicture: mkUrl
-});
+type FieldError = {
+  email?: string;
+  fullName?: string;
+  profilePicture?: string;
+};
 
-// Left("Not an object")
-mkUser(null);
+const mkUser = (data: SimpleObject<User>): e.Either<FieldError, User> =>
+  mkSmartObject({
+    email: mkEmailAddress,
+    fullName: mkStringOfLength(1, 50),
+    profilePicture: mkUrl
+  });
 
+mkUser({ email: "bleh", fullName: "", profilePicture: "bad-url" });
 // Left({
 //   email: "Not a valid email",
 //   fullName: "Not a string between 1 and 50 chars",
 //   profilePicture: "Not a valid URL"
 // })
-mkUser({});
 
-// Right(User)
 mkUser({
   email: "hello@example.com",
   fullName: "Jane Doe",
   profilePicture: "https://www.example.com/photo/1"
 });
+// Right(User)
 ```
 
 ## What problem does this library solve?

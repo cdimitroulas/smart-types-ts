@@ -17,7 +17,7 @@
     "node": ">=14.4.0"
   },
   "devDependencies": {
-    "@cdimitroulas/typescript-scripts": "^2.1.0",
+    "@cdimitroulas/typescript-scripts": "^2.2.0",
     "@types/chai": "^4.2.14",
     "chai": "^4.2.0",
     "fast-check": "^2.12.0",

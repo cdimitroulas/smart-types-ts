@@ -1,4 +1,7 @@
 import * as e from "fp-ts/lib/Either";
+import { EmailAddress } from "./string/emailAddress";
+import { StringWithLength } from "./string/stringWithLength";
+import { URL } from "./string/url";
 type Never<K extends string> = { [P in K]: never };
 
 /**
@@ -64,3 +67,57 @@ export type SmartConstructorRefined<S> = S extends SmartTypeRefined<
 >
   ? (input: T) => e.Either<string, S>
   : never;
+
+// Converts a SmartType back to a plain type like string/number/boolean
+//
+// @example
+// ```ts
+// SimpleType<URL> // string
+// SimpleType<StringWithLength<1, 2>> // string
+// SimpleType<URL[]> // string[]
+// SimpleType<Int> // number
+// ```
+export type SimpleType<S> = S extends
+  | SmartType<infer Type, infer _>
+  | SmartTypeRefined<infer Type, infer _, infer __>
+  ? Type
+  : S extends (infer T)[]
+  ? SimpleType<T>[]
+  : S;
+
+// Recursively go through an object containing Smart Types and "dumb" the types back down
+// to regular TS types like string/boolean/number etc. Regular "dumb" types are returned
+// normally.
+//
+// @example
+// ```ts
+// type Person = {
+//   profilePicture: URL;
+//   name: {
+//     displayName: StringOfLength<1, 30>
+//     fullName: StringOfLength<1, 100>
+//   };
+//   friends: UUIDv4[];
+//   metadata: {
+//     lastLogin: Date;
+//     signupDate: Date;
+//   }
+// }
+//
+// SimpleObject<Person> evaluates to:
+// {
+//   profilePicture: string;
+//   name: {
+//     displayName: string;
+//     fullName: string;
+//   };
+//   friends: string[];
+//   metadata: {
+//     lastLogin: Date;
+//     signupDate: Date;
+//   }
+// }
+// ```
+export type SimpleObject<Obj> = Obj extends Record<PropertyKey, infer _>
+  ? { [key in keyof Obj]: SimpleObject<Obj[key]> }
+  : SimpleType<Obj>;
