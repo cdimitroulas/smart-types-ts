@@ -72,6 +72,7 @@ import {
 // Define our mkUser function which can be used to construct a User
 const mkUser = mkSmartObject<User>({
   email: mkEmailAddress,
+  // use mkSmartObject again for nested objects
   name: mkSmartObject({
     display: mkStringWithLength<1, 30>,
     full: mkStringWithLength<1, 100>
