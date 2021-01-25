@@ -8,15 +8,14 @@ your application's important types/interfaces.
 Define your domain types using the relevant types from `smart-types-ts`:
 
 ```ts
-import { EmailAddress, StringOfLength, URL } from "smart-types-ts";
+import { EmailAddress, StringWithLength, URL } from "smart-types-ts";
 
 interface User {
   email: EmailAddress;
   name: {
-    display: StringOfLength<1, 30>;
-    full: StringOfLength<1, 100>;
+    display: StringWithLength<1, 30>;
+    full: StringWithLength<1, 100>;
   };
-  fullName: StringOfLength<1, 50>;
   profilePicture: URL;
 }
 ```
