@@ -14,7 +14,7 @@ your application's important types/interfaces.
 
 A _Smart Type_ is a type which cannot be created without going through a special function.
 
-For example, you trying to directly assign a variable the `EmailAddress` type will not work:
+For example, trying to directly assign a variable the `EmailAddress` type will not work:
 
 ```ts
 import { EmailAddress } from "smart-types-ts";
