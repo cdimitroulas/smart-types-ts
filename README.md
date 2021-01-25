@@ -26,7 +26,7 @@ Define functions to convert simple objects to your _smart types_:
 import {
   mkEmailAddress,
   mkObject,
-  mkStringOfLength,
+  mkStringWithLength,
   mkURL,
 } from "smart-types-ts";
 
@@ -34,8 +34,8 @@ import {
 const mkUser = mkSmartObject<User>({
   email: mkEmailAddress,
   name: mkSmartObject({
-    display: mkStringOfLength<1, 30>,
-    full: mkStringOfLength<1, 100>
+    display: mkStringWithLength<1, 30>,
+    full: mkStringWithLength<1, 100>
   }),
   profilePicture: mkUrl,
 });
