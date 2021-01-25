@@ -24,7 +24,7 @@ const myEmail: EmailAddress = "test@example.com"; // TS Error!
 
 ### What is a Smart Constructor?
 
-A _Smart Constructor_ is a function which creates a _smart type_. All smart constructors in this
+A _Smart Constructor_ is a function which produces a _Smart Type_. All smart constructors in this
 library take some input and returns either a string or a Smart Type (`Either<string, SmartType>`).
 
 The `Either` type comes from the `fp-ts` library. You can read more about how to work with this
