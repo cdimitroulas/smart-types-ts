@@ -138,7 +138,7 @@ interface User {
 
 `smart-types-ts` simply provides a large number of these _Smart Types_ and their corresponding
 constructors (called _Smart Constructors_!) ready for you to use, so that you can get on with
-modelling your application's domain without havnig to deal with complex Typescript tricks.
+modelling your application's domain without having to deal with complex Typescript tricks.
 
 It also provides the `mkSmartObject` function which allows you to easily convert your simple
 objects into _smart objects_.
