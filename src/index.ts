@@ -11,9 +11,4 @@ export {
 } from "./string/stringWithLength";
 export { URL, mkURL } from "./string/url";
 export { mkSmartObject } from "./mkSmartObject";
-export {
-  SimpleObject,
-  SmartConstructor,
-  SmartType,
-  SmartTypeRefined
-} from "./utilTypes";
+export { SmartConstructor, SmartType, SmartTypeRefined } from "./utilTypes";

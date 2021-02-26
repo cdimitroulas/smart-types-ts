@@ -4,7 +4,6 @@ import { pipe } from "fp-ts/lib/function";
 import { getObjectSemigroup } from "fp-ts/lib/Semigroup";
 import {
   EnforceNonEmptyRecord,
-  SimpleObject,
   SmartConstructor,
   SmartConstructorOptional
 } from "./utilTypes";

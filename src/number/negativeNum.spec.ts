@@ -25,8 +25,8 @@ describe("NegativeNum", () => {
     it("succeeds when the input is a negative number", () => {
       const validInput = fc.oneof(
         fc.integer({ max: -1 }),
-        fc.double({ max: -0.5 }),
-        fc.float({ max: -0.5 })
+        fc.double({ next: true, max: -0.5, noNaN: true }),
+        fc.float({ next: true, max: new Float32Array([-0.5])[0], noNaN: true })
       );
 
       fc.assert(
