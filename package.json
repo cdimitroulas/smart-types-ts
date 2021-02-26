@@ -5,6 +5,7 @@
   "main": "dist/index.js",
   "homepage": "cdimitroulas.github.io/smart-types-ts",
   "scripts": {
+    "build": "npm run compile:prod",
     "compile": "typescript-scripts compile",
     "compile:prod": "typescript-scripts compile --project tsconfig.prod.json",
     "compile:watch": "npm run compile -- --watch",
