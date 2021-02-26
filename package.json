@@ -6,7 +6,8 @@
     "type": "git",
     "url": "https://github.com/cdimitroulas/smart-types-ts.git"
   },
-  "main": "dist/index.js",
+  "main": "lib/",
+  "types": "lib/index.d.ts",
   "homepage": "cdimitroulas.github.io/smart-types-ts",
   "scripts": {
     "build": "npm run compile:prod",
@@ -46,6 +47,9 @@
   },
   "peerDependencies": {
     "typescript": "^4.1.0"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "np": {
     "yarn": false,
