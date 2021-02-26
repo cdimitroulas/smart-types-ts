@@ -1,4 +1,4 @@
-export { ArrayWithLength, mkArrayWithLength } from "./array/arrayWithLength";
+export * from "./array";
 export { Int, mkInt } from "./number/int";
 export { NegativeNum, mkNegativeNum } from "./number/negativeNum";
 export { NumInRange, mkNumInRange } from "./number/numInRange";
