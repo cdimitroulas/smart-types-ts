@@ -2,6 +2,10 @@
   "name": "smart-types-ts",
   "version": "0.0.0",
   "description": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cdimitroulas/smart-types-ts.git"
+  },
   "main": "dist/index.js",
   "homepage": "cdimitroulas.github.io/smart-types-ts",
   "scripts": {
