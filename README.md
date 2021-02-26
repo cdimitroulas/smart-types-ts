@@ -140,5 +140,6 @@ interface User {
 constructors (called _Smart Constructors_!) ready for you to use, so that you can get on with
 modelling your application's domain without having to deal with complex Typescript tricks.
 
-It also provides the `mkSmartObject` function which allows you to easily convert your simple
-objects into _smart objects_.
+It also provides the `mkSmartObject` function which allows you to build your _smart objects_ from
+unknown inputs. This is useful for validating/parsing data from HTTP requests, files, databases, or
+any external input to your program.
