@@ -29,13 +29,11 @@ export type ArrayWithLength<
  * Note: This function can throw if invalid min/max arguments are passed!
  *
  * @example
- * ```ts
  * import * as e from 'fp-ts/Either'
  * import { mkArrayWithLength } from 'smart-types'
  *
  * assert.deepStrictEqual(mkArrayWithLength(2, 10)([]), e.left("Length not between 2-10"))
  * assert.deepStrictEqual(mkArrayWithLength(2, 10)([1, 2, 3]), e.right([1, 2, 3]))
- * ```
  *
  * @category smartConstructor
  * @since 0.0.1
