@@ -1,0 +1,4 @@
+{
+  "srcDir": "./src/array/",
+  "exclude": ["**/*.spec.ts"]
+}
