@@ -1,6 +1,6 @@
 import * as e from "fp-ts/lib/Either";
 import { flow } from "fp-ts/lib/function";
-import { SmartConstructorRefined, SmartTypeRefined } from "../utilTypes";
+import { SmartConstructor, SmartTypeRefined } from "../utilTypes";
 
 export type NumInRange<
   Min extends number,
@@ -10,7 +10,7 @@ export type NumInRange<
 export const mkNumInRange = <Min extends number, Max extends number>(
   min: Min,
   max: Max
-): SmartConstructorRefined<NumInRange<Min, Max>> => {
+): SmartConstructor<NumInRange<Min, Max>> => {
   if (min >= max) {
     throw new Error(
       `Invalid min/max arguments provided to mkNumInRange. min must be less than max but received min: ${min}, max: ${max}`

@@ -3,34 +3,36 @@ import * as e from "fp-ts/lib/Either";
 import { pipe } from "fp-ts/lib/function";
 import { getObjectSemigroup } from "fp-ts/lib/Semigroup";
 import {
+  EnforceNonEmptyRecord,
   SimpleObject,
   SmartConstructor,
-  SmartConstructorRefined
+  SmartConstructorOptional
 } from "./utilTypes";
 
-type EnforceNonEmptyRecord<R> = keyof R extends never ? never : R;
-
-// Given an object replaces all the values with recursively strings to describe an arbitrarily
-// nested object of validation errors
-//
-// @example
-// ```ts
-// type Person = {
-//   name: {
-//     display: StringOfLength<1, 30>
-//     full: StringOfLength<1, 100>
-//   },
-//   profilePicture: URL
-// }
-//
-// FieldError<Person> --> {
-//                          name?: {
-//                            display?: string;
-//                            full?: string;
-//                          };
-//                          profilePicture?: string;
-//                        }
-// ```
+/**
+ *
+ * Given an object replaces all the values recursively with strings to describe an arbitrarily
+ * nested object of validation errors
+ *
+ * @example
+ * ```ts
+ * type Person = {
+ *   name: {
+ *     display: StringOfLength<1, 30>
+ *     full: StringOfLength<1, 100>
+ *   },
+ *   profilePicture: URL
+ * }
+ *
+ * FieldError<Person> --> {
+ *                          name?: {
+ *                            display?: string;
+ *                            full?: string;
+ *                          };
+ *                          profilePicture?: string;
+ *                        }
+ * ```
+ */
 type FieldError<
   T extends EnforceNonEmptyRecord<Record<PropertyKey, unknown>>
 > = Partial<
@@ -41,10 +43,16 @@ type FieldError<
   }
 >;
 
+/**
+ * A ConstructorObj is the object passed to the mkSmartObject function. It should have
+ * keys of the object to construct and values which are Smart Constructors. This types works
+ * recursively to allow for nested Smart Objects.
+ */
 type ConstructorObj<T extends Record<PropertyKey, unknown>> = {
   [key in keyof T]:
     | SmartConstructor<T[key]>
-    | SmartConstructorRefined<T[key]>
+    | SmartConstructorOptional<T[key]>
+    // Allow for nested SmartObjects
     | (T[key] extends Record<PropertyKey, unknown>
         ? MkSmartObject<T[key]>
         : never);
@@ -88,15 +96,3 @@ export const mkSmartObject = <
     e.map(x => x as any)
   );
 };
-
-// type TestType = {
-//   emailAddress: EmailAddress;
-//   profilePicture: URL;
-// };
-
-// const mkPerson = mkSmartObject<TestType>({
-//   emailAddress: mkEmailAddress,
-//   profilePicture: mkURL,
-// });
-
-// console.log(mkPerson({ emailAddress: "test" }));

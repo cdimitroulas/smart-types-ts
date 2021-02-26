@@ -1,5 +1,9 @@
 import * as e from "fp-ts/lib/Either";
+import * as o from "fp-ts/lib/Option";
+
 type Never<K extends string> = { [P in K]: never };
+
+export type EnforceNonEmptyRecord<R> = keyof R extends never ? never : R;
 
 /**
  *
@@ -19,8 +23,8 @@ type Never<K extends string> = { [P in K]: never };
  * ```
  *
  * The idea is to avoid using type assertions inside regular application code and only
- * allow this within smart constructors. Within smart-types-ts, all smart constructors have the
- * "mk" prefix e.g. mkEmailAddress.
+ * allow this within smart constructors. Within smart-types-ts, all smart constructors have
+ * the "mk" prefix e.g. mkEmailAddress.
  *
  * @since 0.0.1
  */
@@ -53,17 +57,11 @@ export type SmartTypeRefined<Type, Name extends string, R> = Type &
   Never<Name> &
   Refinement<R>;
 
-export type SmartConstructor<S> = S extends SmartType<infer T, infer _>
-  ? (input: T) => e.Either<string, S>
-  : never;
+export type SmartConstructor<S> = (input: SimpleType<S>) => e.Either<string, S>;
 
-export type SmartConstructorRefined<S> = S extends SmartTypeRefined<
-  infer T,
-  infer _Name,
-  infer _Refinement
->
-  ? (input: T) => e.Either<string, S>
-  : never;
+export type SmartConstructorOptional<S> = (
+  input?: SimpleType<S>
+) => e.Either<string, o.Option<S>>;
 
 // Converts a SmartType back to a plain type like string/number/boolean
 //
@@ -77,42 +75,43 @@ export type SmartConstructorRefined<S> = S extends SmartTypeRefined<
 export type SimpleType<S> = S extends
   | SmartType<infer Type, infer _>
   | SmartTypeRefined<infer Type, infer _, infer __>
-  ? Type // Make it work for arrays of SmartTypes as well
-  : (S extends (infer T)[] ? SimpleType<T>[] : S);
+  ? Type // Make it work for arrays of SmartTypes
+  : (S extends (infer T)[] ? SimpleType<T>[] : never);
 
-// Recursively go through an object containing Smart Types and "dumb" the types back down
-// to regular TS types like string/boolean/number etc. Regular "dumb" types are returned
-// normally.
-//
-// @example
-// ```ts
-// type Person = {
-//   profilePicture: URL;
-//   name: {
-//     displayName: StringOfLength<1, 30>
-//     fullName: StringOfLength<1, 100>
-//   };
-//   friends: UUIDv4[];
-//   metadata: {
-//     lastLogin: Date;
-//     signupDate: Date;
-//   }
-// }
-//
-// SimpleObject<Person> evaluates to:
-// {
-//   profilePicture: string;
-//   name: {
-//     displayName: string;
-//     fullName: string;
-//   };
-//   friends: string[];
-//   metadata: {
-//     lastLogin: Date;
-//     signupDate: Date;
-//   }
-// }
-// ```
+/** Recursively go through an object containing Smart Types and "dumb" the types back down
+ * to regular TS types like string/boolean/number etc. Regular "dumb" types are returned
+ * normally.
+ *
+ * @example
+ * ```ts
+ * type Person = {
+ *   profilePicture: URL;
+ *   name: {
+ *     displayName: StringOfLength<1, 30>
+ *     fullName: StringOfLength<1, 100>
+ *   };
+ *   friends: UUIDv4[];
+ *   metadata: {
+ *     lastLogin: Date;
+ *     signupDate: Date;
+ *   }
+ * }
+ *
+ * SimpleObject<Person> evaluates to:
+ * {
+ *   profilePicture: string;
+ *   name: {
+ *     displayName: string;
+ *     fullName: string;
+ *   };
+ *   friends: string[];
+ *   metadata: {
+ *     lastLogin: Date;
+ *     signupDate: Date;
+ *   }
+ * }
+ * ```
+ */
 export type SimpleObject<Obj> = Obj extends Record<PropertyKey, infer _>
   ? { [key in keyof Obj]: SimpleObject<Obj[key]> }
   : SimpleType<Obj>;

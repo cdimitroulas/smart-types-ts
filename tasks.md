@@ -6,3 +6,5 @@ List of things to try out before releasing this library
 - [ ] Have a simple way to handle plain types in `mkSmartObject`
       (they should use `e.right` as the smart constructor by default)
 - [ ] Setup documentation generation
+- [ ] Decide whether smart types should work from an `unknown` input or not.
+      This could make it significantly easier to succeed in writing some of the complex types like MkSmartObject
