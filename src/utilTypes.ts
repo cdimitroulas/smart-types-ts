@@ -57,10 +57,10 @@ export type SmartTypeRefined<Type, Name extends string, R> = Type &
   Never<Name> &
   Refinement<R>;
 
-export type SmartConstructor<S> = (input: SimpleType<S>) => e.Either<string, S>;
+export type SmartConstructor<S> = (input: unknown) => e.Either<string, S>;
 
 export type SmartConstructorOptional<S> = (
-  input?: SimpleType<S>
+  input: unknown
 ) => e.Either<string, o.Option<S>>;
 
 // Converts a SmartType back to a plain type like string/number/boolean

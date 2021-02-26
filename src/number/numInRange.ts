@@ -1,6 +1,7 @@
 import * as e from "fp-ts/lib/Either";
 import { flow } from "fp-ts/lib/function";
 import { SmartConstructor, SmartTypeRefined } from "../utilTypes";
+import { number } from "./number";
 
 export type NumInRange<
   Min extends number,
@@ -18,9 +19,12 @@ export const mkNumInRange = <Min extends number, Max extends number>(
   }
 
   return flow(
-    e.fromPredicate(
-      val => val >= min && val <= max,
-      () => `Number must be between ${min}-${max}`
+    number,
+    e.chain(
+      e.fromPredicate(
+        val => val >= min && val <= max,
+        () => `Number must be between ${min}-${max}`
+      )
     ),
     e.map(x => x as NumInRange<Min, Max>)
   );

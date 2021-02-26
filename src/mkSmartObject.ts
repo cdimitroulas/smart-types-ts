@@ -59,7 +59,7 @@ type ConstructorObj<T extends Record<PropertyKey, unknown>> = {
 };
 
 type MkSmartObject<T extends Record<PropertyKey, unknown>> = (
-  input: SimpleObject<T>
+  input: Record<PropertyKey, unknown>
 ) => e.Either<FieldError<T>, T>;
 
 // Stricter typing for Object.keys

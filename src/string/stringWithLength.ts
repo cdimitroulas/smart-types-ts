@@ -2,6 +2,7 @@ import { flow } from "fp-ts/lib/function";
 import * as e from "fp-ts/lib/Either";
 import { SmartConstructor, SmartTypeRefined } from "../utilTypes";
 import { mkWithLength } from "../withLength";
+import { string } from "./string";
 
 export type StringWithLength<
   Min extends number,
@@ -15,7 +16,8 @@ export const mkStringWithLength = <Min extends number, Max extends number>(
   const mkWithLength_ = mkWithLength(min, max);
 
   return flow(
-    mkWithLength_,
+    string,
+    e.chain(mkWithLength_),
     e.map((str: string) => str as StringWithLength<Min, Max>)
   );
 };

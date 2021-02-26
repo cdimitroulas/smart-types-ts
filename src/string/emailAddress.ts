@@ -10,12 +10,16 @@ import * as e from "fp-ts/lib/Either";
 import { flow } from "fp-ts/lib/function";
 import validator from "validator";
 import { SmartConstructor, SmartType } from "../utilTypes";
+import { string } from "./string";
 
 export type EmailAddress = SmartType<string, "EmailAddress">;
 
 export const mkEmailAddress: SmartConstructor<EmailAddress> = flow(
-  s => s.trim(),
-  s => s.toLowerCase(),
-  e.fromPredicate(validator.isEmail, () => "Not a valid email address"),
+  string,
+  e.map(s => s.trim()),
+  e.map(s => s.toLowerCase()),
+  e.chain(
+    e.fromPredicate(validator.isEmail, () => "Not a valid email address")
+  ),
   e.map(email => email as EmailAddress)
 );
