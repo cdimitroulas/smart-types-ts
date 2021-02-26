@@ -37,31 +37,20 @@ Note: This function can throw if invalid min/max arguments are passed!
 **Signature**
 
 ```ts
-export declare const mkArrayWithLength: <
-  Min extends number,
-  Max extends number
->(
+export declare const mkArrayWithLength: <Min extends number, Max extends number>(
   min: Min,
   max: Max
-) => <T>(
-  arr: T[]
-) => e.Either<
-  string,
-  SmartTypeRefined<T[], "ArrayWithLength", { min: Min; max: Max }>
->;
+) => <T>(arr: T[]) => e.Either<string, SmartTypeRefined<T[], 'ArrayWithLength', { min: Min; max: Max }>>
 ```
 
 **Example**
 
 ```ts
-import * as e from "fp-ts/Either";
-import { mkArrayWithLength } from "smart-types-ts";
+import * as e from 'fp-ts/Either'
+import { mkArrayWithLength } from 'smart-types-ts'
 
-assert.deepStrictEqual(
-  mkArrayWithLength(2, 10)([]),
-  e.left("Length not between 2-10")
-);
-assert.deepStrictEqual(mkArrayWithLength(2, 10)([1, 2, 3]), e.right([1, 2, 3]));
+assert.deepStrictEqual(mkArrayWithLength(2, 10)([]), e.left('Length not between 2-10'))
+assert.deepStrictEqual(mkArrayWithLength(2, 10)([1, 2, 3]), e.right([1, 2, 3]))
 ```
 
 Added in v0.0.1
@@ -73,11 +62,11 @@ Added in v0.0.1
 **Signature**
 
 ```ts
-export type ArrayWithLength<
-  Min extends number,
-  Max extends number,
-  T
-> = SmartTypeRefined<T[], "ArrayWithLength", { min: Min; max: Max }>;
+export type ArrayWithLength<Min extends number, Max extends number, T> = SmartTypeRefined<
+  T[],
+  'ArrayWithLength',
+  { min: Min; max: Max }
+>
 ```
 
 Added in v0.0.1
