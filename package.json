@@ -1,15 +1,16 @@
 {
   "name": "smart-types-ts",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "description": "",
   "main": "dist/index.js",
-  "homepage": "www.cdimitroulas.com",
+  "homepage": "cdimitroulas.github.io/smart-types-ts",
   "scripts": {
     "compile": "typescript-scripts compile",
     "compile:prod": "typescript-scripts compile --project tsconfig.prod.json",
     "compile:watch": "npm run compile -- --watch",
     "docs": "docs-ts",
     "lint": "typescript-scripts lint 'src/**/*.ts'",
+    "prepare": "npm run build",
     "test:watch": "typescript-scripts test:transpileOnly --watch 'src/**/*.spec.ts'",
     "test": "npm run compile && npm run lint && typescript-scripts test:transpileOnly 'src/**/*.spec.ts'"
   },
@@ -25,6 +26,7 @@
     "chai": "^4.2.0",
     "docs-ts": "^0.6.4",
     "fast-check": "^2.12.0",
+    "np": "^7.4.0",
     "prettier": "^1.18.2"
   },
   "husky": {
@@ -39,5 +41,9 @@
   },
   "peerDependencies": {
     "typescript": "^4.1.0"
+  },
+  "np": {
+    "yarn": false,
+    "contents": "dist"
   }
 }
